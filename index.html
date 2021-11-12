@@ -1,0 +1,92 @@
+<style>
+  body {
+    margin: 0px;
+  }
+
+  #root {
+    display: grid;
+    place-content: center;
+    background: white;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  video {
+    border: 1px solid blue;
+  }
+
+  canvas {
+    border: 1px solid green;
+  }
+</style>
+
+<video id="video" width="300" src="video2.mp4" autoplay muted loop></video>
+<canvas id="output-canvas" width="300" ></canvas>
+
+<script type="module">
+  function resize() {
+    const container = document.querySelector("#root");
+    const c = document.querySelector("canvas");
+    c.width = container.clientWidth;
+    c.height = container.clientHeight;
+  }
+
+  // resize();
+  const video = document.getElementById('video');
+  const canvas = document.querySelector("canvas");
+  const ctx = canvas.getContext("2d");
+
+  const initVideo = async () => {
+    let videoConstraints = {
+      width: 320,
+      height: 240, 
+      frameRate: 20,
+    };
+  
+    // let videoConstraints = {width: 360, frameRate: 20};
+  
+    return await navigator.mediaDevices.getUserMedia({
+      // audio: {"echoCancellation": true},
+      video: videoConstraints,
+    });
+  }
+
+  (async () => {
+    const stream = await initVideo();
+    video.srcObject = stream;
+    setTimeout(() => {
+      const { width, height } = video.getBoundingClientRect();
+      canvas.width = width;
+      canvas.height = height;
+      
+      initializeDrawing();
+    }, 2000)
+
+  })()
+
+  function initializeDrawing() {
+    const w = canvas.width;
+    const h = canvas.height;
+
+    function draw() {
+      ctx.drawImage(video, 0, 0, w, h);
+      var frame = ctx.getImageData(0, 0, w, h);
+      var l = frame.data.length / 4;
+  
+      for (var i = 0; i < l; i++) {
+        var grey = (frame.data[i * 4 + 0] + frame.data[i * 4 + 1] + frame.data[i * 4 + 2]) / 3;
+  
+        frame.data[i * 4 + 0] = grey;
+        frame.data[i * 4 + 1] = grey;
+        frame.data[i * 4 + 2] = grey;
+      }
+      ctx.putImageData(frame, 0, 0);
+    }
+
+    setInterval(draw, 1000/20);
+  }
+    
+
+
+</script>
