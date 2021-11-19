@@ -69,19 +69,39 @@
     const w = canvas.width;
     const h = canvas.height;
 
+    let background = undefined;
+    let step = 0;
     function draw() {
+      // save the first few video frames here
       ctx.drawImage(video, 0, 0, w, h);
       var frame = ctx.getImageData(0, 0, w, h);
-      var l = frame.data.length / 4;
-  
-      for (var i = 0; i < l; i++) {
-        var grey = (frame.data[i * 4 + 0] + frame.data[i * 4 + 1] + frame.data[i * 4 + 2]) / 3;
-  
-        frame.data[i * 4 + 0] = grey;
-        frame.data[i * 4 + 1] = grey;
-        frame.data[i * 4 + 2] = grey;
+      if (step === 0) {
+        background = ctx.getImageData(0, 0, w, h);
       }
+      var l = frame.data.length / 4;
+
+
+      for (var i = 0; i < l; i++) {
+        // if (step < 3) break;
+        let r = background.data[i * 4 + 0] - frame.data[i * 4 + 0]
+        let g = background.data[i * 4 + 1] - frame.data[i * 4 + 1]
+        let b = background.data[i * 4 + 2] - frame.data[i * 4 + 2]
+
+        const bg = (background.data[i * 4 + 0] + background.data[i * 4 + 1] + background.data[i * 4 + 2]) / 3;
+        const grey = (frame.data[i * 4 + 0] + frame.data[i * 4 + 1] + frame.data[i * 4 + 2]) / 3;
+        // var val = grey > 124 ? 0 : 255;
+        // if (i % 1000 === 0) console.log(background, grey, bg);
+        // var val = (r > 5 && g > 5 && b > 5) ? 255 : 0;
+  
+        frame.data[i * 4 + 0] = r;
+        frame.data[i * 4 + 1] = g;
+        frame.data[i * 4 + 2] = b;
+      }
+
       ctx.putImageData(frame, 0, 0);
+      
+      step++;
+
     }
 
     setInterval(draw, 1000/20);
