@@ -13,8 +13,8 @@
 
   const initVideo = async () => {
     let videoConstraints = {
-      width: 256,
-      height: 256, 
+      width: 1000,
+      height: 1000, 
       frameRate: 30,
     };
   
@@ -63,10 +63,24 @@
         const bg = (background.data[i * 4 + 0] + background.data[i * 4 + 1] + background.data[i * 4 + 2]) / 3;
         const grey = (frame.data[i * 4 + 0] + frame.data[i * 4 + 1] + frame.data[i * 4 + 2]) / 3;
 
-        if(r + g + b > 50) {
+        if(r + g + b > 100) {
+        
         frame.data[i * 4 + 0] = 255;
-
+        frame.data[i * 4 + 1] = 0;
+        frame.data[i * 4 + 2] = 0;
         }
+        else {
+          if (step % 1 == 0 && (r + b + g > 200)) {
+            background.data[i * 4 + 0] = frame.data[i * 4 + 0];
+            background.data[i * 4 + 1] = frame.data[i * 4 + 1];
+            background.data[i * 4 + 2] = frame.data[i * 4 + 2];
+          }
+
+          frame.data[i * 4 + 0] = 0;
+          frame.data[i * 4 + 1] = 0;
+          frame.data[i * 4 + 2] = 0;
+        }
+        
 
       }
 
