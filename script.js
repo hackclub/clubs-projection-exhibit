@@ -54,7 +54,7 @@
       var l = frame.data.length / 4;
 
 
-      for (var i = 0; i < l; i++) {
+      for (var i = 3; i < l; i++) {
 
         let r = Math.abs(background.data[i * 4 + 0] - frame.data[i * 4 + 0])
         let g = Math.abs(background.data[i * 4 + 1] - frame.data[i * 4 + 1])
