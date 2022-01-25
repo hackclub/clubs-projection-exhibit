@@ -11,6 +11,7 @@ export function vibe(imgData, background) {
   const radius = 20;                      // R
   const subsamplingFactor = 16;           // amount of random subsampling
 
+  // need to copy this background array
   const samples = new Array(nbSamples).fill(background); // background model
 
   function getEuclideanDist(image0, image1, index) {
@@ -63,13 +64,13 @@ export function vibe(imgData, background) {
       let count = 0, index = 0, distance = 0;
       while ((count < reqMatches) && (index < nbSamples)){
         distance = getEuclideanDist(image, samples[index], xy_to_i(x, y));
-        if (distance < radius)
-          count++;
+        if (distance < radius) count++;
         index++;
       }
       // pixel classification according to reqMatches
       if (count >= reqMatches){ // the pixel belongs to the background
         // stores the result in the segmentation map
+        // setPixel background
         for (let i = 0; i < 4; i++) {
           segmentationMap[xy_to_i(x, y)+i] = image[xy_to_i(x, y)+i];
         }
@@ -80,7 +81,7 @@ export function vibe(imgData, background) {
           // other random values are ignored 
           randomNumber = getRandomNumber(0, nbSamples-1);
           for (let i = 0; i < 4; i++) {
-            samples[xy_to_i(x, y) + i] = image[xy_to_i(x, y) + i];
+            samples[randomNumber][xy_to_i(x, y) + i] = image[xy_to_i(x, y) + i];
           }
           
         }
@@ -92,7 +93,7 @@ export function vibe(imgData, background) {
           // chooses the value to be replaced randomly
           randomNumber = getRandomNumber(0, nbSamples-1);
           for (let i = 0; i < 4; i++) {
-            samples[xy_to_i(neighborX, neighborY) + i] = image[xy_to_i(x, y) + i];
+            samples[randomNumber][xy_to_i(neighborX, neighborY) + i] = image[xy_to_i(x, y) + i];
           }
         } 
       }
