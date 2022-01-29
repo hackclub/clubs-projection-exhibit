@@ -1,26 +1,33 @@
-<style>
-  body {
-    margin: 0px;
-  }
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BGSEG</title>
 
-  #root {
-    display: grid;
-    place-content: center;
-    background: white;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-  }
+  </head>
+  <body>
+      
+    <style>
+        body {
+          margin: 0px;
+        }
+        #root {
+          display: grid;
+          place-content: center;
+          background: white;
+          height: 100%;
+          width: 100%;
+          overflow: hidden;
+        }
+    
+      </style>
 
-  video {
-    border: 1px solid blue;
-  }
+	
+    <video id="video" width="300" autoplay muted loop></video>
+    <canvas id="output-canvas" width="300" ></canvas>
+    <script src="script.js"></script>
+    </body>
 
-  canvas {
-    border: 1px solid green;
-  }
-</style>
-
-<video id="video" width="300" autoplay muted loop></video>
-<canvas id="output-canvas" width="300" ></canvas>
-<script type="module" src="script.js"></script>
+</html>
